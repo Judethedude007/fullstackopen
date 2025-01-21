@@ -1,52 +1,29 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-
-const Header = ({ text }) => <h1>{text}</h1>;
-
-Header.propTypes = {
-  text: PropTypes.string.isRequired,
-};
-
-const Statistics = ({ good, neutral, bad }) => {
-  const total = good + neutral + bad;
-  const average = total ? (good - bad) / total : 0;
-  const positivePercentage = total ? (good / total) * 100 : 0;
-
-  if (total === 0) {
-    return <p>No feedback given</p>;
-  }
-
-  return (
-    <div>
-      <h2>Statistics</h2>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
-      <p>All: {total}</p>
-      <p>Average: {average.toFixed(10)}</p> {/* Increased precision */}
-      <p>Positive: {positivePercentage.toFixed(10)}%</p> {/* Increased precision */}
-    </div>
-  );
-};
-
-Statistics.propTypes = {
-  good: PropTypes.number.isRequired,
-  neutral: PropTypes.number.isRequired,
-  bad: PropTypes.number.isRequired,
-};
 
 const App = () => {
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ];
+
+  const [selected, setSelected] = useState(0);
+
+  const getRandomAnecdote = () => {
+    const randomIndex = Math.floor(Math.random() * anecdotes.length);
+    setSelected(randomIndex);
+  };
 
   return (
     <div>
-      <Header text="Give Feedback" />
-      <button onClick={() => setGood(good + 1)}>Good</button>
-      <button onClick={() => setNeutral(neutral + 1)}>Neutral</button>
-      <button onClick={() => setBad(bad + 1)}>Bad</button>
-      <Statistics good={good} neutral={neutral} bad={bad} />
+      <h1>Anecdote of the day</h1>
+      <p>{anecdotes[selected]}</p>
+      <button onClick={getRandomAnecdote}>Next Anecdote</button>
     </div>
   );
 };
